@@ -27,16 +27,13 @@ class GameScene extends Phaser.Scene {
         this.add.image(400, 300, 'background').setScale(1.5);
         this.enemyHP = 1000;
         this.enemyHPText = this.add.text(600, 50, `Enemy HP: ${this.enemyHP}`, { fontSize: '24px', fill: '#000' });
-        // Additional line to save reference to the enemy sprite
-        this.enemySprite = this.add.sprite(400, 150, 'enemy').setScale(0.1);
+        this.enemySprite = this.add.sprite(400, 150, 'enemy').setScale(0.1);  // Main enemy image
 
         this.playerHP = 100;
         this.playerHPText = this.add.text(100, 50, `Player HP: ${this.playerHP}`, { fontSize: '24px', fill: '#000' });
 
-        let enemy1 = this.add.sprite(400, 250, 'enemy').setScale(0.2);
-
         const cardWidth = 100;
-        const startX = 120;  // Adjusted for card position
+        const startX = 120;
 
         this.cardSprites = [];
         this.cardAbilities = [];
@@ -54,54 +51,8 @@ class GameScene extends Phaser.Scene {
                 const ability = this.cardAbilities[i];
                 this.handleAbility(ability);
                 card.destroy();  // Remove card after using
-            }, this);  // added context as this
+            }, this);
         }
-    }
-
-    showDamageAnimation(damage, textObj) {
-        const originalY = textObj.y;
-        const tweenDuration = 500;
-
-        if (damage > 0) {
-            textObj.setColor('#ff0000');
-            this.damageEnemyAnimation(); // Trigger enemy damage animation if damage is positive
-        } else {
-            textObj.setColor('#00ff00');
-            this.damagePlayerAnimation(); // Trigger player damage animation otherwise
-        }
-
-        this.tweens.add({
-            targets: textObj,
-            y: originalY - 20,
-            duration: tweenDuration,
-            yoyo: true,
-            onYoyo: function() {
-                textObj.setColor('#ffffff');
-                textObj.y = originalY;
-            }
-        });
-    }
-
-    damageEnemyAnimation() {
-        // Rotate the enemy sprite left and right to simulate the 'wiggle' effect
-        this.tweens.add({
-            targets: this.enemySprite,
-            angle: { from: -15, to: 15 },  // Rotate from -15 to 15 degrees
-            duration: 100,
-            yoyo: true,
-            repeat: 5
-        });
-    }
-
-    damagePlayerAnimation() {
-        const damageOverlay = this.add.rectangle(400, 300, 800, 600, 0xff0000, 0.4);  // semi-transparent red rectangle
-        damageOverlay.setBlendMode(Phaser.BlendModes.COLOR);
-        this.tweens.add({
-            targets: damageOverlay,
-            alpha: 0,
-            duration: 500,
-            onComplete: () => damageOverlay.destroy()  // Remove the overlay after the tween completes
-        });
     }
 
     handleAbility(ability) {
@@ -118,14 +69,6 @@ class GameScene extends Phaser.Scene {
                 this.enemyHP += 10;
                 this.showDamageAnimation(-10, this.enemyHPText);
                 break;
-            // case '+5 Heal':
-            //     this.playerHP += 5;
-            //     this.showDamageAnimation(-5, this.playerHPText);
-            //     break;
-            // case '+15 Heal':
-            //     this.playerHP += 15;
-            //     this.showDamageAnimation(-15, this.playerHPText);
-            //     break;
             case '-5 Enemy':
                 this.enemyHP += 5;
                 this.showDamageAnimation(-5, this.enemyHPText);
@@ -143,8 +86,10 @@ class GameScene extends Phaser.Scene {
 
         if (damage > 0) {
             textObj.setColor('#ff0000');
+            this.damageEnemyAnimation(); // Trigger enemy damage animation
         } else {
             textObj.setColor('#00ff00');
+            this.damagePlayerAnimation(); // Trigger player damage animation
         }
 
         this.tweens.add({
@@ -156,6 +101,28 @@ class GameScene extends Phaser.Scene {
                 textObj.setColor('#ffffff');
                 textObj.y = originalY;
             }
+        });
+    }
+
+    damageEnemyAnimation() {
+        // Rotate the enemy sprite left and right
+        this.tweens.add({
+            targets: this.enemySprite,
+            angle: { from: -15, to: 15 },  
+            duration: 100,
+            yoyo: true,
+            repeat: 5
+        });
+    }
+
+    damagePlayerAnimation() {
+        const damageOverlay = this.add.rectangle(400, 300, 800, 600, 0xff0000, 0.4);
+        damageOverlay.setBlendMode(Phaser.BlendModes.COLOR);
+        this.tweens.add({
+            targets: damageOverlay,
+            alpha: 0,
+            duration: 500,
+            onComplete: () => damageOverlay.destroy()
         });
     }
 
