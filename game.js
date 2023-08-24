@@ -6,7 +6,7 @@ class MainMenuScene extends Phaser.Scene {
 
     create() {
         this.add.text(300, 250, "Artful Duel", { fontSize: '32px', fill: 'red' });
-        const playButton = this.add.text(350, 300, 'Play', { fontSize: '48px', fill: '#fff' }).setInteractive();
+        const playButton = this.add.text(350, 300, 'Play', { fontSize: '48px', fill: '#fff'}).setInteractive( {cursor: 'pointer'});
         playButton.on('pointerdown', () => this.scene.start('GameScene'));
     }
 }
@@ -21,6 +21,10 @@ class GameScene extends Phaser.Scene {
         this.load.image('background', 'assets/bg.jpg');
         this.load.image('card', 'assets/MonaLisaCard.jpg');
         this.load.image('enemy', 'assets/DaVinciCard.jpg');
+        this.load.image('playButton', 'assets/Play_Sound_Button.png');
+        this.load.image('playButtonHover', 'assets/play_Button_Hover.png');
+        this.load.image('muteButton', 'assets/mute_Button.png');
+        this.load.image('muteButtonHover', 'assets/mute_Button_Hover.png');
         this.load.audio('cardSliding', 'assets/Page_Turn-Mark_DiAngelo-1304638748.mp3');
         this.load.audio('cardAttack', 'assets/punch-140236.mp3');
         this.load.audio('backgroundMusic', 'assets/fur-elise.mp3');
@@ -62,6 +66,22 @@ class GameScene extends Phaser.Scene {
 
         music.play();
 
+        //Mute/Play button
+        const playSoundBtn = this.add.sprite(775, 565, 'playButton').setScale(0.6).setInteractive({cursor: 'pointer'});
+        const muteBtn = this.add.sprite(775, 565, 'muteButton').setScale(0.6).setInteractive({cursor: 'pointer'}).setVisible(false);
+
+        playSoundBtn.on('pointerdown', function() {
+            music.stop();
+            playSoundBtn.setVisible(false);
+            muteBtn.setVisible(true);
+        }, this);
+
+        muteBtn.on('pointerdown', function() {
+            music.play();
+            playSoundBtn.setVisible(true);
+            muteBtn.setVisible(false);
+        }, this);
+
         const cardWidth = 100;
         const startX = 90; //Starting Card X Position
 
@@ -71,10 +91,10 @@ class GameScene extends Phaser.Scene {
         for(let i=0; i<6; i++) {
 
             //Starting Card X position + (number of cards * (card Width * Card Spacing))
-            const x = startX + (i * (cardWidth * 1.25)); 
+            const x = startX + (i * (cardWidth * 0.9)); 
 
             //Made Cards Smaller
-            const card = this.add.sprite(x, 540, 'card').setScale(0.1).setInteractive();
+            const card = this.add.sprite(x, 540, 'card').setScale(0.05).setInteractive({cursor: 'pointer'});
             this.cardSprites.push(card);
 
             // Example abilities
@@ -95,15 +115,17 @@ class GameScene extends Phaser.Scene {
             card.on('pointerover', function() {
                 //console.log("over");
 
-                card.setScale(0.15).setInteractive();
+                card.setScale(0.1).setInteractive();
 
                 //Sound that cards may make when you pull a card from your hand
                 cardSliding.play();
             }, this);
 
             card.on('pointerout', function() {
-                console.log("left");
-                card.setScale(0.1).setInteractive();
+                //console.log("left");
+
+                card.setScale(0.05).setInteractive();
+
             }, this);
         }
 
