@@ -113,22 +113,22 @@ class GameScene extends Phaser.Scene {
     
         switch (cardName) {
             case 'Card1':
-                this.enemyHP -= 40;
+                this.enemyHP -= 20;
                 break;
             case 'Card2':
                 this.playerHP += 5;
                 break;
             case 'Card3':
-                this.playerHP += 10;
+                this.playerHP += 5;
                 break;
             case 'Card4':
                 this.enemyHP -= 60;
                 break;
             case 'Card5':
-                this.playerHP += 8;
+                this.playerHP += 5;
                 break;
             case 'Card6':
-                this.enemyHP -= 40;
+                this.enemyHP -= 30;
                 break;
         }
         this.displayCardActionFeedback(cardName);  // display feedback
@@ -192,22 +192,22 @@ class GameScene extends Phaser.Scene {
     
         switch (randAction) {
             case 1:
-                this.playerHP -= 10; // Harm player
+                this.playerHP -= 40; // Harm player
                 break;
             case 2:
                 this.enemyHP += 5;  // Heal enemy
                 break;
             case 3:
-                this.playerHP -= 1; // Slight harm to player
+                this.playerHP -= 10; // Slight harm to player
                 break;
             case 4:
-                this.playerHP -= 15; // More harm to player
+                this.playerHP -= 20; // More harm to player
                 break;
             case 5:
-                this.enemyHP += 8;  // More heal to enemy
+                this.enemyHP += 5;  // More heal to enemy
                 break;
             case 6:
-                this.playerHP -= 3; // Slight harm to player
+                this.playerHP -= 40; // Slight harm to player
                 break;
         }
     
