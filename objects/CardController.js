@@ -16,17 +16,12 @@ class CardController {
 
     draw(x){
         const card = this.deck.draw();
-    //    console.log("drawing");
         this.hand.add(card, x);
-        //console.log("added to hand");
-        //console.log(card);
         return card
     }
 
     play(card){
-        //const card = this.hand.play(index);
         this.hand.play(card);
-        console.log(card);
         this.discardPile.add(card);
         return card;
     }

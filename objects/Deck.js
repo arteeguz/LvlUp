@@ -8,7 +8,6 @@ class Deck {
     }
     
     demoDeck(){
-        console.log(this.controller);
         for (let i = 0; i < 10; i++){
             const card = new Card(this.scene,this.controller,'Mona Lisa', i, 0);
             this.deck.push(card);

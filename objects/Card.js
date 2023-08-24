@@ -8,14 +8,12 @@ class Card {
         this.defense = def;
         this.sprite = null;
         this.hand = null;
-        console.log(this.controller);
     }
 
     setSprite(sprite){
         this.sprite = sprite;
         const card = this;
         this.sprite.on('pointerdown', function() {
-            console.log(card.controller);
             card.controller.play(this);
             const ability = '+10 Damage';
             card.handleAbility();
