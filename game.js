@@ -77,6 +77,14 @@ class GameScene extends Phaser.Scene {
         this.load.image('Card4', 'LvlUp Images/Card4.png');
         this.load.image('Card5', 'LvlUp Images/Card5.png');
         this.load.image('Card6', 'LvlUp Images/Card6.png');
+      
+        this.load.image('playButton', 'assets/Play_Sound_Button.png');
+        this.load.image('playButtonHover', 'assets/play_Button_Hover.png');
+        this.load.image('muteButton', 'assets/mute_Button.png');
+        this.load.image('muteButtonHover', 'assets/mute_Button_Hover.png');
+        this.load.audio('cardSliding', 'assets/Page_Turn-Mark_DiAngelo-1304638748.mp3');
+        this.load.audio('cardAttack', 'assets/punch-140236.mp3');
+        this.load.audio('backgroundMusic', 'assets/fur-elise.mp3');
     }
 
     create(data) {
@@ -132,6 +140,60 @@ class GameScene extends Phaser.Scene {
                 break;
         }
         this.displayCardActionFeedback(cardName);  // display feedback
+      
+         //Card Sound Effect
+
+        //Mark DiAngelo Sound Bible
+        const cardSliding = this.sound.add('cardSliding', {loop: false});
+
+        /*
+        Sound Effect by 
+        <a href="https://pixabay.com/users/universfield-28281460/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=140236">
+        UNIVERSFIELD
+        </a> 
+        from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=140236">
+        Pixabay
+        </a>
+        */
+        const cardAttack = this.sound.add('cardAttack', {loop: false});
+
+        //Background Music - https://www.mfiles.co.uk/mp3-downloads/fur-elise.mp3
+        const music = this.sound.add('backgroundMusic', {loop: true});
+
+        music.play();
+
+        //Mute/Play button
+        const playSoundBtn = this.add.sprite(775, 565, 'playButton').setScale(0.6).setInteractive({cursor: 'pointer'});
+        const muteBtn = this.add.sprite(775, 565, 'muteButton').setScale(0.6).setInteractive({cursor: 'pointer'}).setVisible(false);
+
+        playSoundBtn.on('pointerdown', function() {
+            music.stop();
+            playSoundBtn.setVisible(false);
+            muteBtn.setVisible(true);
+        }, this);
+
+        muteBtn.on('pointerdown', function() {
+            music.play();
+            playSoundBtn.setVisible(true);
+            muteBtn.setVisible(false);
+        }, this);
+      
+      //Made focus for cards
+      card.on('pointerover', function() {
+          //console.log("over");
+
+          card.setScale(0.1).setInteractive();
+
+          //Sound that cards may make when you pull a card from your hand
+          cardSliding.play();
+      }, this);
+
+      card.on('pointerout', function() {
+          //console.log("left");
+
+          card.setScale(0.05).setInteractive();
+
+      }, this);
 
         card.destroy();  // destroy the card
         // First, update the text displays
@@ -246,7 +308,7 @@ class GameScene extends Phaser.Scene {
         this.tweens.add({
             targets: textObj,
             y: originalY - 20,
-            duration: tweenDuration,
+            duration: tweenDuration
             yoyo: true,
             onYoyo: function() {
                 textObj.setColor('#ffffff');
