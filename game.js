@@ -18,7 +18,7 @@ class MainMenuScene extends Phaser.Scene {
 class GameScene extends Phaser.Scene {
     constructor() {
         super({ key: 'GameScene' });
-        this.CardController = new CardController();
+        this.CardController = new CardController(this);
         this.handMap = new Map();
     }
 
@@ -46,9 +46,11 @@ class GameScene extends Phaser.Scene {
         for(let i=0; i<6; i++) {
             
             const x = startX + (i * cardWidth);
-            const card = this.CardController.draw(i)
-            const drawing = this.add.sprite(x, 550, 'card').setScale(0.3).setInteractive();
+//            const card = this.CardController.draw(i)
+            const card = this.CardController.draw(x)
+        /*  const drawing = this.add.sprite(x, 550, 'card').setScale(0.3).setInteractive();
             this.handMap.set(drawing, i);
+        */
             //console.log("checking handmap");
             //console.log(this.handMap.get(drawing));
             //console.log(this.CardController.getHand());
@@ -60,6 +62,8 @@ class GameScene extends Phaser.Scene {
             const abilities = ['+10 Damage', '+20 Damage', '-10 Enemy', '+5 Heal', '+15 Heal', '-5 Enemy'];
             this.cardAbilities.push(abilities[i]);
             */
+
+            /*
             drawing.on('pointerdown', function() {
                 //const ability = this.cardAbilities[i];
                 const card = this.CardController.play(this.handMap.get(drawing));
@@ -68,9 +72,10 @@ class GameScene extends Phaser.Scene {
                 this.handMap.delete(drawing);
                 drawing.destroy();  // Remove card after using
             }, this);
+            */
         }
     }
-
+/*
     handleAbility(ability) {
         switch(ability) {
             case '+10 Damage':
@@ -95,7 +100,7 @@ class GameScene extends Phaser.Scene {
         this.playerHPText.setText(`Player HP: ${this.playerHP}`);
         this.checkGameOver();
     }
-
+*/
     showDamageAnimation(damage, textObj) {
         const originalY = textObj.y;
         const tweenDuration = 500;

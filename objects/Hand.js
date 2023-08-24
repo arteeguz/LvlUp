@@ -1,7 +1,8 @@
 class Hand {
-    constructor() {
+    constructor(scene) {
+        this.scene = scene;
         //this.hand = Array(6);
-        this.hand = new Map();
+        this.hand = new Set();
     }
 /*
     add(card, sprite){
@@ -10,17 +11,19 @@ class Hand {
     }
 */
 
-    add(card, index){
+    add(card, x){
         //this.hand.push(card);
-        this.hand.set(index, card);
+        this.hand.add(card);
+        card.setSprite(this.scene.add.sprite(x, 550, 'card').setScale(0.3).setInteractive());
+        card.addToHand();
     }
-    play(index){
+    play(card){
         //const card = this.hand[index];
-        const card = this.hand.get(index);
+        //const card = this.hand.get(index);
         console.log(card);
         //this.hand = this.hand.splice(index,1);
         //this.hand[index] = null;
-        this.hand.delete(index);
+        this.hand.delete(card);
         return card;
     }
 }

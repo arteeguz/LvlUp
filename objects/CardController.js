@@ -5,25 +5,27 @@ import DiscardPile from "./DiscardPile.js";
 
 
 class CardController {
-    constructor() {
-        this.deck = new Deck();
+    constructor(scene) {
+        this.scene = scene;
+        this.deck = new Deck(scene,this);
         this.deck.demoDeck();
-        this.hand = new Hand();
+        this.hand = new Hand(scene);
 
         this.discardPile = new DiscardPile();
     }
 
-    draw(i){
+    draw(x){
         const card = this.deck.draw();
-        console.log("drawing");
-        this.hand.add(card, i);
+    //    console.log("drawing");
+        this.hand.add(card, x);
         //console.log("added to hand");
         //console.log(card);
         return card
     }
 
-    play(index){
-        const card = this.hand.play(index);
+    play(card){
+        //const card = this.hand.play(index);
+        this.hand.play(card);
         console.log(card);
         this.discardPile.add(card);
         return card;

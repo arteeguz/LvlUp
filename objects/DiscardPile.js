@@ -1,10 +1,10 @@
 class DiscardPile {
     constructor() {
-        this.discard_pile = [];
+        this.discardPile = [];
     }
 
     add(card){
-        this.discard_pile.push(card);
+        this.discardPile.push(card);
     }
 
     
