@@ -18,16 +18,16 @@ class GameScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('background', 'bg.jpg');
-        this.load.image('card', 'MonaLisaCard1.jpg');
-        this.load.image('enemy', 'DaVinciCard.jpg');
+        this.load.image('background', 'LvlUp Images/bg1.jpg');
+        this.load.image('card', 'LvlUp Images/Card1.png');
+        this.load.image('enemy', 'LvlUp Images/Monster2.png');
     }
 
     create() {
-        this.add.image(400, 300, 'background').setScale(1.5);
+        this.add.image(400, 300, 'background').setScale(1.0);
         this.enemyHP = 1000;
         this.enemyHPText = this.add.text(600, 50, `Enemy HP: ${this.enemyHP}`, { fontSize: '24px', fill: '#000' });
-        this.enemySprite = this.add.sprite(400, 150, 'enemy').setScale(0.1);  // Main enemy image
+        this.enemySprite = this.add.sprite(400, 150, 'enemy').setScale(0.2);  // Main enemy image
 
         this.playerHP = 100;
         this.playerHPText = this.add.text(100, 50, `Player HP: ${this.playerHP}`, { fontSize: '24px', fill: '#000' });
