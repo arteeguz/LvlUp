@@ -21,11 +21,14 @@ class GameScene extends Phaser.Scene {
         this.load.image('background', 'assets/bg.jpg');
         this.load.image('card', 'assets/MonaLisaCard.jpg');
         this.load.image('enemy', 'assets/DaVinciCard.jpg');
+        this.load.audio('cardSliding', 'assets/Page_Turn-Mark_DiAngelo-1304638748.mp3');
+        this.load.audio('cardAttack', 'assets/punch-140236.mp3');
+        this.load.audio('backgroundMusic', 'assets/fur-elise.mp3');
     }
 
     create() {
         //Background
-        this.add.image(400, 300, 'background').setScale(1.5);
+        this.background = this.add.image(400, 300, 'background').setScale(1.5);
 
         //Enemy HP
         this.enemyHP = 100;
@@ -37,6 +40,27 @@ class GameScene extends Phaser.Scene {
         //Player Text
         this.playerHP = 100;
         this.playerHPText = this.add.text(100, 50, `Player HP: ${this.playerHP}`, { fontSize: '24px', fill: '#000' });
+
+        //Card Sound Effect
+
+        //Mark DiAngelo Sound Bible
+        const cardSliding = this.sound.add('cardSliding', {loop: false});
+
+        /*
+        Sound Effect by 
+        <a href="https://pixabay.com/users/universfield-28281460/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=140236">
+        UNIVERSFIELD
+        </a> 
+        from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=140236">
+        Pixabay
+        </a>
+        */
+        const cardAttack = this.sound.add('cardAttack', {loop: false});
+
+        //Background Music - https://www.mfiles.co.uk/mp3-downloads/fur-elise.mp3
+        const music = this.sound.add('backgroundMusic', {loop: true});
+
+        music.play();
 
         const cardWidth = 100;
         const startX = 90; //Starting Card X Position
@@ -60,13 +84,21 @@ class GameScene extends Phaser.Scene {
             card.on('pointerdown', function() {
                 const ability = this.cardAbilities[i];
                 this.handleAbility(ability);
+
+                //Sound of player or enemy attacking.
+                cardAttack.play();
+
                 card.destroy();  // Remove card after using
             }, this);
 
             //Made focus for cards
             card.on('pointerover', function() {
                 //console.log("over");
-                card.setScale(0.2).setInteractive();
+
+                card.setScale(0.15).setInteractive();
+
+                //Sound that cards may make when you pull a card from your hand
+                cardSliding.play();
             }, this);
 
             card.on('pointerout', function() {
@@ -74,8 +106,10 @@ class GameScene extends Phaser.Scene {
                 card.setScale(0.1).setInteractive();
             }, this);
         }
+
     }
 
+    //If enemy HP is subtracted, player is attacking. If enemy HP is added, enemy is attacking.
     handleAbility(ability) {
         switch(ability) {
             case '+10 Damage':
