@@ -5,9 +5,13 @@ class MainMenuScene extends Phaser.Scene {
     }
 
     create() {
-        this.add.text(300, 250, "Artful Duel", { fontSize: '32px', fill: 'red' });
-        const playButton = this.add.text(350, 300, 'Play', { fontSize: '48px', fill: '#fff'}).setInteractive( {cursor: 'pointer'});
-        playButton.on('pointerdown', () => this.scene.start('GameScene'));
+        this.add.text(200, 45, "Artful Duel", {fontFamily: 'Times New Roman', fontSize: '85px', fill: 'red' });
+        const playButton = this.add.text(
+            350, 300, 'Play', {fontFamily: 'Verdana', fontSize: '48px', fill: '#fff'}).setInteractive( {cursor: 'pointer'}
+            );
+        playButton.on('pointerdown', () => this.scene.start('GameScene'))
+                    .on('pointerover', () => playButton.setFill('#29e55b'))
+                    .on('pointerout', () => playButton.setFill('#fff'));
     }
 }
 
@@ -36,14 +40,14 @@ class GameScene extends Phaser.Scene {
 
         //Enemy HP
         this.enemyHP = 100;
-        this.enemyHPText = this.add.text(600, 50, `Enemy HP: ${this.enemyHP}`, { fontSize: '24px', fill: '#000' });
+        this.enemyHPText = this.add.text(600, 50, `Enemy HP: ${this.enemyHP}`, { fontFamily: 'Gill Sans', fontSize: '24px', fill: '#000' });
 
         //Main enemy image
         this.enemySprite = this.add.sprite(400, 150, 'enemy').setScale(0.1);  
 
         //Player Text
         this.playerHP = 100;
-        this.playerHPText = this.add.text(100, 50, `Player HP: ${this.playerHP}`, { fontSize: '24px', fill: '#000' });
+        this.playerHPText = this.add.text(100, 50, `Player HP: ${this.playerHP}`, { fontFamily: 'Gill Sans', fontSize: '24px', fill: '#000' });
 
         //Card Sound Effect
 
@@ -175,7 +179,7 @@ class GameScene extends Phaser.Scene {
             duration: tweenDuration,
             yoyo: true,
             onYoyo: function() {
-                textObj.setColor('#ffffff');
+                textObj.setColor('#000000'); //Revert to black text after damaging or healing enemy. //White text would confuse players
                 textObj.y = originalY;
             }
         });
