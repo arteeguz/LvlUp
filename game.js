@@ -18,29 +18,39 @@ class GameScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('background', 'bg.jpg');
-        this.load.image('card', 'MonaLisaCard1.jpg');
-        this.load.image('enemy', 'DaVinciCard.jpg');
+        this.load.image('background', 'assets/bg.jpg');
+        this.load.image('card', 'assets/MonaLisaCard.jpg');
+        this.load.image('enemy', 'assets/DaVinciCard.jpg');
     }
 
     create() {
+        //Background
         this.add.image(400, 300, 'background').setScale(1.5);
-        this.enemyHP = 1000;
-        this.enemyHPText = this.add.text(600, 50, `Enemy HP: ${this.enemyHP}`, { fontSize: '24px', fill: '#000' });
-        this.enemySprite = this.add.sprite(400, 150, 'enemy').setScale(0.1);  // Main enemy image
 
+        //Enemy HP
+        this.enemyHP = 100;
+        this.enemyHPText = this.add.text(600, 50, `Enemy HP: ${this.enemyHP}`, { fontSize: '24px', fill: '#000' });
+
+        //Main enemy image
+        this.enemySprite = this.add.sprite(400, 150, 'enemy').setScale(0.1);  
+
+        //Player Text
         this.playerHP = 100;
         this.playerHPText = this.add.text(100, 50, `Player HP: ${this.playerHP}`, { fontSize: '24px', fill: '#000' });
 
         const cardWidth = 100;
-        const startX = 120;
+        const startX = 90; //Starting Card X Position
 
         this.cardSprites = [];
         this.cardAbilities = [];
 
         for(let i=0; i<6; i++) {
-            const x = startX + (i * cardWidth);
-            const card = this.add.sprite(x, 550, 'card').setScale(0.3).setInteractive();
+
+            //Starting Card X position + (number of cards * (card Width * Card Spacing))
+            const x = startX + (i * (cardWidth * 1.25)); 
+
+            //Made Cards Smaller
+            const card = this.add.sprite(x, 540, 'card').setScale(0.1).setInteractive();
             this.cardSprites.push(card);
 
             // Example abilities
@@ -51,6 +61,17 @@ class GameScene extends Phaser.Scene {
                 const ability = this.cardAbilities[i];
                 this.handleAbility(ability);
                 card.destroy();  // Remove card after using
+            }, this);
+
+            //Made focus for cards
+            card.on('pointerover', function() {
+                //console.log("over");
+                card.setScale(0.2).setInteractive();
+            }, this);
+
+            card.on('pointerout', function() {
+                console.log("left");
+                card.setScale(0.1).setInteractive();
             }, this);
         }
     }
