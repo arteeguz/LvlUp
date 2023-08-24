@@ -1,3 +1,6 @@
+import CardController from "./objects/CardController.js";
+import Card from "./objects/Card.js";
+
 // Main Menu Scene
 class MainMenuScene extends Phaser.Scene {
     constructor() {
@@ -15,6 +18,8 @@ class MainMenuScene extends Phaser.Scene {
 class GameScene extends Phaser.Scene {
     constructor() {
         super({ key: 'GameScene' });
+        this.CardController = new CardController();
+        this.handMap = new Map();
     }
 
     preload() {
@@ -39,18 +44,29 @@ class GameScene extends Phaser.Scene {
         this.cardAbilities = [];
 
         for(let i=0; i<6; i++) {
+            
             const x = startX + (i * cardWidth);
+            const card = this.CardController.draw(i)
+            const drawing = this.add.sprite(x, 550, 'card').setScale(0.3).setInteractive();
+            this.handMap.set(drawing, i);
+            //console.log("checking handmap");
+            //console.log(this.handMap.get(drawing));
+            //console.log(this.CardController.getHand());
+            /*
             const card = this.add.sprite(x, 550, 'card').setScale(0.3).setInteractive();
             this.cardSprites.push(card);
 
             // Example abilities
             const abilities = ['+10 Damage', '+20 Damage', '-10 Enemy', '+5 Heal', '+15 Heal', '-5 Enemy'];
             this.cardAbilities.push(abilities[i]);
-
-            card.on('pointerdown', function() {
-                const ability = this.cardAbilities[i];
+            */
+            drawing.on('pointerdown', function() {
+                //const ability = this.cardAbilities[i];
+                const card = this.CardController.play(this.handMap.get(drawing));
+                const ability = card.getAbility();
                 this.handleAbility(ability);
-                card.destroy();  // Remove card after using
+                this.handMap.delete(drawing);
+                drawing.destroy();  // Remove card after using
             }, this);
         }
     }
