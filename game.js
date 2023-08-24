@@ -5,7 +5,10 @@ class MainMenuScene extends Phaser.Scene {
     }
 
     create() {
+        //Game Title
         this.add.text(200, 45, "Artful Duel", {fontFamily: 'Times New Roman', fontSize: '85px', fill: 'red' });
+
+        //Game Start Button
         const playButton = this.add.text(
             350, 300, 'Play', {fontFamily: 'Verdana', fontSize: '48px', fill: '#fff'}).setInteractive( {cursor: 'pointer'}
             );
@@ -41,6 +44,7 @@ class GameScene extends Phaser.Scene {
         //Enemy HP
         this.enemyHP = 100;
         this.enemyHPText = this.add.text(600, 50, `Enemy HP: ${this.enemyHP}`, { fontFamily: 'Gill Sans', fontSize: '24px', fill: '#000' });
+        this.enemyTotalHPText = this.add.text(755, 50, '/' + this.enemyHP, { fontFamily: 'Gill Sans', fontSize: '24px', fill: '#000' });
 
         //Main enemy image
         this.enemySprite = this.add.sprite(400, 150, 'enemy').setScale(0.1);  
@@ -48,6 +52,7 @@ class GameScene extends Phaser.Scene {
         //Player Text
         this.playerHP = 100;
         this.playerHPText = this.add.text(100, 50, `Player HP: ${this.playerHP}`, { fontFamily: 'Gill Sans', fontSize: '24px', fill: '#000' });
+        this.playeTotalHPText = this.add.text(255, 50, `/` + this.playerHP, { fontFamily: 'Gill Sans', fontSize: '24px', fill: '#000' });
 
         //Card Sound Effect
 
