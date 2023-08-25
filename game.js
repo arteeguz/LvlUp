@@ -56,6 +56,7 @@ class LoseScene extends Phaser.Scene {
         replayButton.on('pointerdown', () => this.scene.start('LevelSelectionScene'));
     }
 }
+
 // Main Game Scene
 class GameScene extends Phaser.Scene {
     constructor() {
@@ -94,7 +95,6 @@ class GameScene extends Phaser.Scene {
         this.load.audio('backgroundMusic', 'assets/fur-elise.mp3');
     }
 
-    
 
     create(data) {
         this.playerHandGroup = this.add.group();
@@ -162,23 +162,39 @@ class GameScene extends Phaser.Scene {
             this.muteBtn.setVisible(false);
         }, this);
 
+        //Uncomment the line of code below to play music once player clicks a level.
+        //this.music.play();
+
     }
 
+    //Gives players new cards once cards in player's hand reaches 0.
     redrawCards() {
+
         if (this.playerCards.length === 0) {
             const newCards = [];
+
             for (let i = 0; i < 3; i++) {
                 if (this.cards.length > 0) {
+                    //Compute a random integer between the min and max values, inclusive.
                     const randomIndex = Phaser.Math.Between(0, this.cards.length - 1);
-                    const newCard = this.cards.splice(randomIndex, 1)[0]; // Remove and get the card
+                    // Remove and get the card
+                    //const newCard = this.cards.splice(randomIndex, 1)[0];
+
+                    const newCard = this.cards[randomIndex]; //Stores cards. Does not remove cards.
+
+                    //Push card to newCards array.
                     newCards.push(newCard);
+
+                    //console.log(newCards);
                 }
             }
-    
+            
             // Add the redrawn cards to the player's hand
-            this.playerCards = [...newCards];
+            this.playerCards = [...newCards]; 
             this.updatePlayerHandDisplay(); // Update the display including attaching event listeners
+            
         }
+        
     }
 
     updatePlayerHandDisplay() {
@@ -228,7 +244,7 @@ class GameScene extends Phaser.Scene {
                 });
 
             }
-            }
+        }
         
         
 
@@ -296,13 +312,19 @@ class GameScene extends Phaser.Scene {
             this.turnIndicator.setText("Enemy's Turn");
     
             this.time.delayedCall(1000, this.handleEnemyTurn, [], this); // Delay of 1 second before enemy takes its turn.
+
         }
 
         this.playerCards.splice(this.playerCards.indexOf(cardName), 1); // Remove the used card from playerCards array
 
+        //Redundant if statement
+        /*
         if (this.playerCards.length === 0) {
             this.redrawCards();
         }
+        */
+
+        this.redrawCards();
     }
     
     displayCardActionFeedback(cardName) {
