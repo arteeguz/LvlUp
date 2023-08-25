@@ -38,7 +38,7 @@ class LevelSelectionScene extends Phaser.Scene {
 
         //Level 2 button
         const level2Button = this.add.text(
-            600, 300, 'Level 2', { fontFamily: 'Verdana', fontSize: '32px', fill: '#fff' }
+            500, 300, 'Level 2', { fontFamily: 'Verdana', fontSize: '32px', fill: '#fff' }
             ).setInteractive({cursor: 'pointer'});
 
         //Level 2 button animation
@@ -316,13 +316,12 @@ class GameScene extends Phaser.Scene {
                 const cardAttack = this.sound.add('cardAttack', {loop: false});
                 
                 // Attach event listeners to the card
-                card.on('pointerdown', () => this.useCard(cardName, card));
-                
-                //Card animation/functionality
-                card.on('pointerdown', function() {
-                    //Sound of player or enemy attacking.
+                card.on('pointerdown', () => this.useCard(cardName, card))
+
+                .on('pointerdown', function() {
                     cardAttack.play();
-                })
+                }) 
+
                 .on('pointerover', function() {
                     card.setScale(0.22);
 
