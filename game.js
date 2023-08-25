@@ -4,11 +4,53 @@ class MainMenuScene extends Phaser.Scene {
         super({ key: 'MainMenuScene' });
     }
 
+    preload() {
+        this.load.image('menuBackground', 'LvlUp Images/mainMenuBg.jpg');
+    }
+
     create() {
-        this.add.text(300, 250, "Artful Duel", { fontSize: '32px', fill: 'red' });
-        const playButton = this.add.text(350, 300, 'Play', { fontSize: '48px', fill: '#fff' }).setInteractive();
+        this.add.image(400, 300, 'menuBackground').setOrigin(0.5).setScale(1.1);
+    
+        // Title styles and background
+        const titleStyle = {
+            fontFamily: 'Arial Bold',
+            fontStyle: 'italic bold',
+            fontSize: '48px',
+            fill: ['#22aaff', '#88ddff'],
+            stroke: '#ff0000',
+            strokeThickness: 2,
+            align: 'center'
+        };
+        
+        let titleBG = this.add.graphics();
+        titleBG.fillStyle(0x000000, 0.5);
+        titleBG.fillRoundedRect(240, 220, 320, 70, 15);
+        titleBG.lineStyle(3, 0xffffff, 1);
+        titleBG.strokeRoundedRect(240, 220, 320, 70, 15);
+    
+        this.add.text(400, 255, "Artful Duel", titleStyle).setOrigin(0.5);
+    
+        // Play button styles and background
+        const playStyle = {
+            fontFamily: 'Arial Bold',
+            fontSize: '52px',
+            fill: ['#88ff88', '#008800'],
+            stroke: '#ffffff',
+            strokeThickness: 2,
+            align: 'center'
+        };
+    
+        let playBG = this.add.graphics();
+        playBG.fillStyle(0x000000, 0.5);
+        playBG.fillRoundedRect(325, 340, 150, 70, 15);
+        playBG.lineStyle(3, 0xffffff, 1);
+        playBG.strokeRoundedRect(325, 340, 150, 70, 15);
+    
+        const playButton = this.add.text(400, 375, 'Play', playStyle).setOrigin(0.5).setInteractive();
+    
         playButton.on('pointerdown', () => this.scene.start('LevelSelectionScene'));
     }
+    
 }
 
 class LevelSelectionScene extends Phaser.Scene {
@@ -16,12 +58,32 @@ class LevelSelectionScene extends Phaser.Scene {
         super({ key: 'LevelSelectionScene' });
     }
 
-    create() {
-        const level1Button = this.add.text(200, 300, 'Level 1', { fontSize: '32px', fill: '#fff' }).setInteractive();
-        level1Button.on('pointerdown', () => this.scene.start('GameScene', { level: 1 }));
+    preload() {
+        this.load.image('levelBG', 'LvlUp Images/levelBG.jpg');
+    }
 
-        const level2Button = this.add.text(600, 300, 'Level 2', { fontSize: '32px', fill: '#fff' }).setInteractive();
+    create() {
+        this.add.image(400, 300, 'levelBG').setOrigin(0.5).setScale(0.5);
+
+        const buttonStyle = {
+            fontSize: '32px',
+            fill: '#ff0000',
+            stroke: '#000',
+            strokeThickness: 3,
+            backgroundColor: 'yellow', // semi-transparent black
+            padding: { left: 15, right: 15, top: 10, bottom: 10 },
+            borderRadius: 8
+        };
+
+        const level1Button = this.add.text(150, 300, 'Level 1', buttonStyle).setInteractive();
+        level1Button.on('pointerdown', () => this.scene.start('GameScene', { level: 1 }));
+        level1Button.on('pointerover', () => level1Button.setBackgroundColor('rgba(0, 0, 0, 0.8)'));  // darker background on hover
+        level1Button.on('pointerout', () => level1Button.setBackgroundColor('yellow'));
+
+        const level2Button = this.add.text(500, 300, 'Level 2', buttonStyle).setInteractive();
         level2Button.on('pointerdown', () => this.scene.start('GameScene', { level: 2 }));
+        level2Button.on('pointerover', () => level2Button.setBackgroundColor('rgba(0, 0, 0, 0.8)'));  // darker background on hover
+        level2Button.on('pointerout', () => level2Button.setBackgroundColor('yellow'));
     }
 }
 
@@ -99,7 +161,7 @@ class GameScene extends Phaser.Scene {
     create(data) {
         this.playerHandGroup = this.add.group();
         this.playerHP = 100;
-        this.enemyHP = 500;
+        this.enemyHP = 100;
 
         if (data.level === 1) {
             this.add.image(400, 300, 'bg1').setOrigin(0.5).setScale(0.8);

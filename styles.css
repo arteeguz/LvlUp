@@ -48,9 +48,51 @@ header {
     display:flex;
 }
 
+/* #card-descriptions {
+    flex: 1;
+    padding: 20px;
+} */
+
 #card-descriptions {
     flex: 1;
     padding: 20px;
+    background: #2a2a2a;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    display: flex;             
+    flex-wrap: wrap;          
+    justify-content: center;  
+    width: 80%;  /* Matching the width of #about-us */
+    margin-top: 40px;  /* Increased margin-top for spacing */
+}
+
+#card-descriptions h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.card-item {
+    margin: 20px;
+    width: 150px;
+    text-align: center;
+}
+
+.card-item h4 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #e6b800;
+}
+
+.card-item img {
+    width: 120px;
+    height: auto;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.card-item p {
+    margin: 0;
 }
 
 #main-menu {
