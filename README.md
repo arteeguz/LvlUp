@@ -8,8 +8,12 @@ Two Exciting Levels: Challenge yourself with two levels of gameplay.
 Interactive Cards: Hover and select cards with beautiful visual effects.
 Customized Audio: Immerse yourself with engaging sound effects and background music.
 Elegant UI: User-friendly interface with intuitive navigation.
+
 Technologies Used
 Phaser 3: This game was built using the Phaser 3 game framework.
+HTML: Framework of website to host game.
+CSS: Stylize website.
+JavaScript: In conjunction with Phaser 3 to build game.
 
 Setup & Installation
 To get Artful Duel up and running on your local machine, follow these steps:
@@ -30,7 +34,9 @@ npm start
 The game should now be running on http://localhost:yourPortNumber.
 
 Third-Party Services & Credits
-Phaser: Game framework used to build and design the game. Link to Phaser
+Phaser: Game framework used to build and design the game. Link to Phaser:
+
+https://phaser.io
 
 Contributing
 
