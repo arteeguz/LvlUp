@@ -120,26 +120,16 @@ class GameScene extends Phaser.Scene {
             //set card hitbox using geometry
             const corner = card.getTopLeft();
             const hitArea = new Phaser.Geom.Rectangle(
-                //card.x - cardWidth * card.scaleX * card.originX,
                 corner[0],
-                //card.y - cardHeight * card.scaleY * card.originY,
                 corner[1],
-                //cardWidth * card.scaleX,
                 card.displayWidth,
-                //cardHeight * card.scaleY
                 card.displayHeight
             );
-            console.log(card);
-            console.log(hitArea);
             card.setInteractive(hitArea, Phaser.Geom.Rectangle.Contains); // Set the hitboxx area
         
             card.on('pointerdown', () => this.useCard(this.cards[i], card));
         
             card.on('pointerover', function() {
-                console.log("begin debug snippet");
-                console.log(card);
-                console.log(hitArea);
-                console.log("end debug snippet");
                 card.setScale(0.22);
             });
         
@@ -212,29 +202,13 @@ class GameScene extends Phaser.Scene {
                 
                 // Set interactive and hit area similar to how you did it before
                 
-                /*
-                const hitArea = new Phaser.Geom.Rectangle(
-                    card.x - cardWidth * card.scaleX * card.originX,
-                    card.y - cardHeight * card.scaleY * card.originY,
-                    cardWidth * card.scaleX,
-                    cardHeight * card.scaleY
-                );
-                */
                 const corner = card.getTopLeft();
                 const hitArea = new Phaser.Geom.Rectangle(
-                //card.x - cardWidth * card.scaleX * card.originX,
                     corner[0],
-                    //card.y - cardHeight * card.scaleY * card.originY,
                     corner[1],
-                    //cardWidth * card.scaleX,
-                    card.displayWidth *5,
-                    //cardHeight * card.scaleY
+                    card.displayWidth *5, //multiply by 5 needed for some reason
                     card.displayHeight*5
                 );
-                console.log("Card:");
-                console.log(card);
-                console.log("Hit Area:");
-                console.log(hitArea);
                 card.setInteractive(hitArea, Phaser.Geom.Rectangle.Contains);
                 
                 // Use the playerHandGroup to add the card
@@ -244,13 +218,11 @@ class GameScene extends Phaser.Scene {
                 card.on('pointerdown', () => this.useCard(cardName, card));
                 
                 card.on('pointerover', () => {
-                    console.log("pointer over here");
                     card.setScale(0.22);
                     // Play sound or do something else
                 });
                 
                 card.on('pointerout', () => {
-                    console.log("oof you lost me");
                     card.setScale(0.2);
                     // Play sound or do something else
                 });
@@ -261,9 +233,6 @@ class GameScene extends Phaser.Scene {
         
 
     useCard(cardName,card) {
-        console.log("using card");
-        console.log(cardName);
-        console.log(card);
         const previousPlayerHP = this.playerHP;
         const previousEnemyHP = this.enemyHP;
     
