@@ -64,6 +64,13 @@ class GameScene extends Phaser.Scene {
         this.enemyHP = 100;
         this.cards = ['Card1', 'Card2', 'Card3', 'Card4', 'Card5', 'Card6']; // Sample set of cards
         this.turnIndicator = null;
+
+        this.music = null; //Declare music prop
+        this.playSoundBtn=null; //Declare sound butt prop
+        this.muteBtn=null; //Declare mute property
+        this.playerCards = [...this.cards]; // Initialize player cards with all available cards
+        this.maxHandSize = 6;
+        this.playerHandGroup = null;
     }
 
     preload() {
@@ -87,9 +94,12 @@ class GameScene extends Phaser.Scene {
         this.load.audio('backgroundMusic', 'assets/fur-elise.mp3');
     }
 
+    
+
     create(data) {
+        this.playerHandGroup = this.add.group();
         this.playerHP = 100;
-        this.enemyHP = 100;
+        this.enemyHP = 500;
 
         if (data.level === 1) {
             this.add.image(400, 300, 'bg1').setOrigin(0.5).setScale(0.8);
@@ -101,19 +111,125 @@ class GameScene extends Phaser.Scene {
         
         this.enemySprite.setScale(0.2);
 
+        const cardWidth = 100; //define card dims
+        const cardHeight = 200;
+        //set cards
         for (let i = 0; i < this.cards.length; i++) {
-            let card = this.add.image(150 + i * 100, 500, this.cards[i]).setInteractive();
-            card.setScale(0.2, 0.2);
-
-            card.on('pointerdown', () => this.useCard(this.cards[i], card));  // passing card object
+            let card = this.add.image(150 + i * 100, 500, this.cards[i]).setScale(0.2);
+            card.setInteractive();
+            //set card hitbox using geometry
+            const hitArea = new Phaser.Geom.Rectangle(
+                card.x - cardWidth * card.scaleX * card.originX,
+                card.y - cardHeight * card.scaleY * card.originY,
+                cardWidth * card.scaleX,
+                cardHeight * card.scaleY
+            );
+        
+            card.setInteractive(hitArea, Phaser.Geom.Rectangle.Contains); // Set the hitboxx area
+        
+            card.on('pointerdown', () => this.useCard(this.cards[i], card));
+        
+            card.on('pointerover', function() {
+                card.setScale(0.22);
+            });
+        
+            card.on('pointerout', function() {
+                card.setScale(0.2);
+            });
         }
-
-
+        
         this.playerHPText = this.add.text(50, 20, `Player HP: ${this.playerHP}`, { fontSize: '16px', fill: 'black' });
         this.enemyHPText = this.add.text(600, 20, `Enemy HP: ${this.enemyHP}`, { fontSize: '16px', fill: 'black' });
 
         this.turnIndicator = this.add.text(400, 50, "Player's Turn", { fontSize: '32px', fill: 'white' }).setOrigin(0.5);
+
+        // Background Music - Load the music only once in the create method
+        this.music = this.sound.add('backgroundMusic', { loop: true });
+
+        // Mute/Play button - Create the buttons only once in the create method
+        this.playSoundBtn = this.add.sprite(775, 565, 'playButton').setScale(0.6).setInteractive({ cursor: 'pointer' });
+        this.muteBtn = this.add.sprite(775, 565, 'muteButton').setScale(0.6).setInteractive({ cursor: 'pointer' }).setVisible(false);
+
+        this.playSoundBtn.on('pointerdown', function () {
+            this.music.stop();
+            this.playSoundBtn.setVisible(false);
+            this.muteBtn.setVisible(true);
+        }, this);
+
+        this.muteBtn.on('pointerdown', function () {
+            this.music.play();
+            this.playSoundBtn.setVisible(true);
+            this.muteBtn.setVisible(false);
+        }, this);
+
     }
+
+    redrawCards() {
+        if (this.playerCards.length === 0) {
+            const newCards = [];
+            for (let i = 0; i < 3; i++) {
+                if (this.cards.length > 0) {
+                    const randomIndex = Phaser.Math.Between(0, this.cards.length - 1);
+                    const newCard = this.cards.splice(randomIndex, 1)[0]; // Remove and get the card
+                    newCards.push(newCard);
+                }
+            }
+    
+            // Add the redrawn cards to the player's hand
+            this.playerCards = [...newCards];
+            this.updatePlayerHandDisplay(); // Update the display including attaching event listeners
+        }
+    }
+
+    updatePlayerHandDisplay() {
+            // Clear existing card sprites
+            this.playerHandGroup.clear(true, true);
+        
+            // Define card dimensions and spacing
+            const cardWidth = 100;
+            const cardHeight = 200;
+            const cardSpacing = 20;
+        
+            // Calculate the total width of the player's hand based on the number of cards
+            const totalHandWidth = (this.playerCards.length * cardWidth) + ((this.playerCards.length - 1) * cardSpacing);
+            
+            // Calculate the starting X position to center the hand on the screen
+            const startX = (this.sys.canvas.width - totalHandWidth) / 2;
+        
+            // Create and position card sprites
+            for (let i = 0; i < this.playerCards.length; i++) {
+                const cardName = this.playerCards[i];
+                const card = this.add.image(startX + (i * (cardWidth + cardSpacing)), 500, cardName).setScale(0.2);
+                
+                // Set interactive and hit area similar to how you did it before
+                const hitArea = new Phaser.Geom.Rectangle(
+                    card.x - cardWidth * card.scaleX * card.originX,
+                    card.y - cardHeight * card.scaleY * card.originY,
+                    cardWidth * card.scaleX,
+                    cardHeight * card.scaleY
+                );
+                
+                card.setInteractive(hitArea, Phaser.Geom.Rectangle.Contains);
+                
+                // Use the playerHandGroup to add the card
+                this.playerHandGroup.add(card);
+                
+                // Attach event listeners to the card
+                card.on('pointerdown', () => this.useCard(cardName, card));
+                
+                card.on('pointerover', () => {
+                    card.setScale(0.22);
+                    // Play sound or do something else
+                });
+                
+                card.on('pointerout', () => {
+                    card.setScale(0.2);
+                    // Play sound or do something else
+                });
+            }
+            }
+        
+        
 
     useCard(cardName,card) {
         const previousPlayerHP = this.playerHP;
@@ -139,44 +255,8 @@ class GameScene extends Phaser.Scene {
                 this.enemyHP -= 40;
                 break;
         }
+
         this.displayCardActionFeedback(cardName);  // display feedback
-      
-         //Card Sound Effect
-
-        //Mark DiAngelo Sound Bible
-        const cardSliding = this.sound.add('cardSliding', {loop: false});
-
-        /*
-        Sound Effect by 
-        <a href="https://pixabay.com/users/universfield-28281460/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=140236">
-        UNIVERSFIELD
-        </a> 
-        from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=140236">
-        Pixabay
-        </a>
-        */
-        const cardAttack = this.sound.add('cardAttack', {loop: false});
-
-        //Background Music - https://www.mfiles.co.uk/mp3-downloads/fur-elise.mp3
-        const music = this.sound.add('backgroundMusic', {loop: true});
-
-        music.play();
-
-        //Mute/Play button
-        const playSoundBtn = this.add.sprite(775, 565, 'playButton').setScale(0.6).setInteractive({cursor: 'pointer'});
-        const muteBtn = this.add.sprite(775, 565, 'muteButton').setScale(0.6).setInteractive({cursor: 'pointer'}).setVisible(false);
-
-        playSoundBtn.on('pointerdown', function() {
-            music.stop();
-            playSoundBtn.setVisible(false);
-            muteBtn.setVisible(true);
-        }, this);
-
-        muteBtn.on('pointerdown', function() {
-            music.play();
-            playSoundBtn.setVisible(true);
-            muteBtn.setVisible(false);
-        }, this);
       
       //Made focus for cards
       card.on('pointerover', function() {
@@ -196,11 +276,11 @@ class GameScene extends Phaser.Scene {
       }, this);
 
         card.destroy();  // destroy the card
-        // First, update the text displays
+        //update the text displays
         this.playerHPText.setText(`Player HP: ${this.playerHP}`);
         this.enemyHPText.setText(`Enemy HP: ${this.enemyHP}`);
     
-        // Next, check if the game is over (before animations or changing turns)
+        // Check if the game is over (before animations or changing turns)
         if (!this.checkGameOver()) {
             // If game isn't over, show animations and change turn
     
@@ -216,6 +296,12 @@ class GameScene extends Phaser.Scene {
     
             this.time.delayedCall(1000, this.handleEnemyTurn, [], this); // Delay of 1 second before enemy takes its turn.
         }
+
+        this.playerCards.splice(this.playerCards.indexOf(cardName), 1); // Remove the used card from playerCards array
+
+if (this.playerCards.length === 0) {
+    this.redrawCards();
+}
     }
     
     displayCardActionFeedback(cardName) {
@@ -308,7 +394,7 @@ class GameScene extends Phaser.Scene {
         this.tweens.add({
             targets: textObj,
             y: originalY - 20,
-            duration: tweenDuration
+            duration: tweenDuration,
             yoyo: true,
             onYoyo: function() {
                 textObj.setColor('#ffffff');

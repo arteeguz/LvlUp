@@ -45,6 +45,12 @@ header {
     height: 610px; 
     width: 810px; 
     background-color: #222;
+    display:flex;
+}
+
+#card-descriptions {
+    flex: 1;
+    padding: 20px;
 }
 
 #main-menu {
