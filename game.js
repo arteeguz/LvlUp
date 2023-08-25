@@ -118,18 +118,28 @@ class GameScene extends Phaser.Scene {
             let card = this.add.image(150 + i * 100, 500, this.cards[i]).setScale(0.2);
             card.setInteractive();
             //set card hitbox using geometry
+            const corner = card.getTopLeft();
             const hitArea = new Phaser.Geom.Rectangle(
-                card.x - cardWidth * card.scaleX * card.originX,
-                card.y - cardHeight * card.scaleY * card.originY,
-                cardWidth * card.scaleX,
-                cardHeight * card.scaleY
+                //card.x - cardWidth * card.scaleX * card.originX,
+                corner[0],
+                //card.y - cardHeight * card.scaleY * card.originY,
+                corner[1],
+                //cardWidth * card.scaleX,
+                card.displayWidth,
+                //cardHeight * card.scaleY
+                card.displayHeight
             );
-        
+            console.log(card);
+            console.log(hitArea);
             card.setInteractive(hitArea, Phaser.Geom.Rectangle.Contains); // Set the hitboxx area
         
             card.on('pointerdown', () => this.useCard(this.cards[i], card));
         
             card.on('pointerover', function() {
+                console.log("begin debug snippet");
+                console.log(card);
+                console.log(hitArea);
+                console.log("end debug snippet");
                 card.setScale(0.22);
             });
         
@@ -195,20 +205,36 @@ class GameScene extends Phaser.Scene {
             
             // Calculate the starting X position to center the hand on the screen
             const startX = (this.sys.canvas.width - totalHandWidth) / 2;
-        
             // Create and position card sprites
             for (let i = 0; i < this.playerCards.length; i++) {
                 const cardName = this.playerCards[i];
-                const card = this.add.image(startX + (i * (cardWidth + cardSpacing)), 500, cardName).setScale(0.2);
+                let card = this.add.image(startX + (i * (cardWidth + cardSpacing)), 500, cardName).setScale(0.2);
                 
                 // Set interactive and hit area similar to how you did it before
+                
+                /*
                 const hitArea = new Phaser.Geom.Rectangle(
                     card.x - cardWidth * card.scaleX * card.originX,
                     card.y - cardHeight * card.scaleY * card.originY,
                     cardWidth * card.scaleX,
                     cardHeight * card.scaleY
                 );
-                
+                */
+                const corner = card.getTopLeft();
+                const hitArea = new Phaser.Geom.Rectangle(
+                //card.x - cardWidth * card.scaleX * card.originX,
+                    corner[0],
+                    //card.y - cardHeight * card.scaleY * card.originY,
+                    corner[1],
+                    //cardWidth * card.scaleX,
+                    card.displayWidth,
+                    //cardHeight * card.scaleY
+                    card.displayHeight
+                );
+                console.log("Card:");
+                console.log(card);
+                console.log("Hit Area:");
+                console.log(hitArea);
                 card.setInteractive(hitArea, Phaser.Geom.Rectangle.Contains);
                 
                 // Use the playerHandGroup to add the card
@@ -218,20 +244,26 @@ class GameScene extends Phaser.Scene {
                 card.on('pointerdown', () => this.useCard(cardName, card));
                 
                 card.on('pointerover', () => {
+                    console.log("pointer over here");
                     card.setScale(0.22);
                     // Play sound or do something else
                 });
                 
                 card.on('pointerout', () => {
+                    console.log("oof you lost me");
                     card.setScale(0.2);
                     // Play sound or do something else
                 });
+
             }
             }
         
         
 
     useCard(cardName,card) {
+        console.log("using card");
+        console.log(cardName);
+        console.log(card);
         const previousPlayerHP = this.playerHP;
         const previousEnemyHP = this.enemyHP;
     
@@ -299,9 +331,9 @@ class GameScene extends Phaser.Scene {
 
         this.playerCards.splice(this.playerCards.indexOf(cardName), 1); // Remove the used card from playerCards array
 
-if (this.playerCards.length === 0) {
-    this.redrawCards();
-}
+        if (this.playerCards.length === 0) {
+            this.redrawCards();
+        }
     }
     
     displayCardActionFeedback(cardName) {
