@@ -33,9 +33,13 @@ Third-Party Services & Credits
 Phaser: Game framework used to build and design the game. Link to Phaser
 
 Contributing
+
 Wei Jian Zhen: firestorma
+
 Richard Palestri: theuncluded
+
 Artem Guz: arteeguz
+
 Muhammed Uddin: azurelobster
 
 Google Slides:
