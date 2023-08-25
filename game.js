@@ -93,13 +93,27 @@ class WinScene extends Phaser.Scene {
     }
 
     create() {
-        this.add.text(300, 250, "You Won!", { fontSize: '48px', fill: 'green' });
+        this.add.text(300, 250, "You Won!", { fontFamily: 'Arial', fontSize: '48px', fill: 'green' });
 
-        const homeButton = this.add.text(200, 400, 'Home', { fontSize: '32px', fill: '#fff' }).setInteractive();
-        homeButton.on('pointerdown', () => this.scene.start('MainMenuScene'));
+        //Home button
+        const homeButton = this.add.text(
+            200, 400, 'Home', { fontFamily: 'Verdana', fontSize: '32px', fill: '#fff' }
+            ).setInteractive({cursor: 'pointer'});
+        
+        //Home button animation
+        homeButton.on('pointerdown', () => this.scene.start('MainMenuScene'))
+                    .on('pointerover', () => homeButton.setFill('#29e55b'))
+                    .on('pointerout', () => homeButton.setFill('#fff'));
 
-        const replayButton = this.add.text(500, 400, 'Try Again', { fontSize: '32px', fill: '#fff' }).setInteractive();
-        replayButton.on('pointerdown', () => this.scene.start('LevelSelectionScene'));
+        //Replay button
+        const replayButton = this.add.text(
+            500, 400, 'Try Again', { fontFamily: 'Verdana', fontSize: '32px', fill: '#fff' }
+            ).setInteractive({cursor: 'pointer'});
+        
+        //Replay button animation
+        replayButton.on('pointerdown', () => this.scene.start('LevelSelectionScene'))
+                        .on('pointerover', () => replayButton.setFill('#29e55b'))
+                        .on('pointerout', () => replayButton.setFill('#fff'));
     }
 }
 
@@ -109,13 +123,27 @@ class LoseScene extends Phaser.Scene {
     }
 
     create() {
-        this.add.text(300, 250, "You Lost!", { fontSize: '48px', fill: 'red' });
+        this.add.text(300, 250, "You Lost!", { fontFamily: 'Arial', fontSize: '48px', fill: 'red' });
 
-        const homeButton = this.add.text(200, 400, 'Home', { fontSize: '32px', fill: '#fff' }).setInteractive();
-        homeButton.on('pointerdown', () => this.scene.start('MainMenuScene'));
+        //Home button
+        const homeButton = this.add.text(
+            200, 400, 'Home', { fontFamily: 'Verdana', fontSize: '32px', fill: '#fff' }
+            ).setInteractive({cursor: 'pointer'});
+        
+        //Home button animation
+        homeButton.on('pointerdown', () => this.scene.start('MainMenuScene'))
+                    .on('pointerover', () => homeButton.setFill('#29e55b'))
+                    .on('pointerout', () => homeButton.setFill('#fff'));
 
-        const replayButton = this.add.text(500, 400, 'Try Again', { fontSize: '32px', fill: '#fff' }).setInteractive();
-        replayButton.on('pointerdown', () => this.scene.start('LevelSelectionScene'));
+        //Replay button
+        const replayButton = this.add.text(
+            500, 400, 'Try Again', { fontFamily: 'Verdana', fontSize: '32px', fill: '#fff' }
+            ).setInteractive({cursor: 'pointer'});
+        
+        //Replay button animation
+        replayButton.on('pointerdown', () => this.scene.start('LevelSelectionScene'))
+                        .on('pointerover', () => replayButton.setFill('#29e55b'))
+                        .on('pointerout', () => replayButton.setFill('#fff'));
     }
 }
 
@@ -173,12 +201,28 @@ class GameScene extends Phaser.Scene {
         
         this.enemySprite.setScale(0.2);
 
+        //Card Sound Effect
+
+        //Mark DiAngelo Sound Bible
+        const cardSliding = this.sound.add('cardSliding', {loop: false});
+
+        /*
+        Sound Effect by 
+        <a href="https://pixabay.com/users/universfield-28281460/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=140236">
+        UNIVERSFIELD
+        </a> 
+        from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=140236">
+        Pixabay
+        </a>
+        */
+        const cardAttack = this.sound.add('cardAttack', {loop: false});
+
         const cardWidth = 100; //define card dims
         const cardHeight = 200;
         //set cards
         for (let i = 0; i < this.cards.length; i++) {
             let card = this.add.image(150 + i * 100, 500, this.cards[i]).setScale(0.2);
-            card.setInteractive();
+            card.setInteractive({cursor: 'pointer'});
             //set card hitbox using geometry
             const corner = card.getTopLeft();
             const hitArea = new Phaser.Geom.Rectangle(
@@ -190,22 +234,32 @@ class GameScene extends Phaser.Scene {
             card.setInteractive(hitArea, Phaser.Geom.Rectangle.Contains); // Set the hitboxx area
         
             card.on('pointerdown', () => this.useCard(this.cards[i], card));
-        
-            card.on('pointerover', function() {
+
+            //Card animation/functionality
+            card.on('pointerdown', function() {
+                //Sound of player or enemy attacking.
+                cardAttack.play();
+            })
+            .on('pointerover', function() {
                 card.setScale(0.22);
-            });
-        
-            card.on('pointerout', function() {
+
+                 //Sound that cards may make when you pull a card from your hand
+                cardSliding.play();
+            })
+            .on('pointerout', function() {
                 card.setScale(0.2);
             });
         }
         
-        this.playerHPText = this.add.text(50, 20, `Player HP: ${this.playerHP}`, { fontSize: '16px', fill: 'black' });
-        this.enemyHPText = this.add.text(600, 20, `Enemy HP: ${this.enemyHP}`, { fontSize: '16px', fill: 'black' });
+        this.playerHPText = this.add.text(50, 20, `Player HP: ${this.playerHP}`, { fontFamily: 'Gill Sans', fontSize: '16px', fill: 'black' });
+        this.enemyHPText = this.add.text(600, 20, `Enemy HP: ${this.enemyHP}`, { fontFamily: 'Gill Sans', fontSize: '16px', fill: 'black' });
 
-        this.turnIndicator = this.add.text(400, 50, "Player's Turn", { fontSize: '32px', fill: 'white' }).setOrigin(0.5);
+        this.turnIndicator = this.add.text(
+            400, 50, "Player's Turn", { fontFamily: 'Gill Sans', fontSize: '32px', fill: 'white' }
+            ).setOrigin(0.5);
 
-        // Background Music - Load the music only once in the create method
+        // Background Music - Load the music only once in the create method 
+        //From: https://www.mfiles.co.uk/mp3-downloads/fur-elise.mp3
         this.music = this.sound.add('backgroundMusic', { loop: true });
 
         // Mute/Play button - Create the buttons only once in the create method
@@ -225,7 +279,7 @@ class GameScene extends Phaser.Scene {
         }, this);
 
         //Uncomment the line of code below to play music once player clicks a level.
-        //this.music.play();
+        this.music.play();
 
     }
 
@@ -279,6 +333,9 @@ class GameScene extends Phaser.Scene {
                 let card = this.add.image(startX + (i * (cardWidth + cardSpacing)), 500, cardName).setScale(0.2);
                 
                 // Set interactive and hit area similar to how you did it before
+
+                //Change cursor to pointer when cursor is hovering over card
+                card.setInteractive({cursor: 'pointer'}); 
                 
                 const corner = card.getTopLeft();
                 const hitArea = new Phaser.Geom.Rectangle(
@@ -291,18 +348,27 @@ class GameScene extends Phaser.Scene {
                 
                 // Use the playerHandGroup to add the card
                 this.playerHandGroup.add(card);
+
+                //Had to redeclare variables in order for sounds to work once redrawn.
+                const cardSliding = this.sound.add('cardSliding', {loop: false});
+
+                const cardAttack = this.sound.add('cardAttack', {loop: false});
                 
                 // Attach event listeners to the card
-                card.on('pointerdown', () => this.useCard(cardName, card));
-                
-                card.on('pointerover', () => {
+                card.on('pointerdown', () => this.useCard(cardName, card))
+
+                .on('pointerdown', function() {
+                    cardAttack.play();
+                }) 
+
+                .on('pointerover', function() {
                     card.setScale(0.22);
-                    // Play sound or do something else
-                });
-                
-                card.on('pointerout', () => {
+
+                    //Sound that cards may make when you pull a card from your hand
+                    cardSliding.play();
+                })
+                .on('pointerout', function() {
                     card.setScale(0.2);
-                    // Play sound or do something else
                 });
 
             }
@@ -337,6 +403,10 @@ class GameScene extends Phaser.Scene {
 
         this.displayCardActionFeedback(cardName);  // display feedback
       
+        /*
+
+        //Dead code
+
       //Made focus for cards
       card.on('pointerover', function() {
           //console.log("over");
@@ -353,6 +423,8 @@ class GameScene extends Phaser.Scene {
           card.setScale(0.05).setInteractive();
 
       }, this);
+
+      */
 
         card.destroy();  // destroy the card
         //update the text displays
@@ -517,6 +589,8 @@ class GameScene extends Phaser.Scene {
                     this.scene.start('LoseScene');
                 }
             }, this);
+
+            this.music.stop();
             return true;
         } else if (this.enemyHP <= 0) {
             this.cameras.main.fade(800, 255, 255, 255, false, function(camera, progress) {
@@ -524,6 +598,8 @@ class GameScene extends Phaser.Scene {
                     this.scene.start('WinScene');
                 }
             }, this);
+
+            this.music.stop();
             return true;
         }
         return false;
