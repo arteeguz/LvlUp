@@ -227,9 +227,9 @@ class GameScene extends Phaser.Scene {
                     //card.y - cardHeight * card.scaleY * card.originY,
                     corner[1],
                     //cardWidth * card.scaleX,
-                    card.displayWidth,
+                    card.displayWidth *5,
                     //cardHeight * card.scaleY
-                    card.displayHeight
+                    card.displayHeight*5
                 );
                 console.log("Card:");
                 console.log(card);
