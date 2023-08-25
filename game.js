@@ -251,12 +251,39 @@ class GameScene extends Phaser.Scene {
             });
         }
         
-        this.playerHPText = this.add.text(50, 20, `Player HP: ${this.playerHP}`, { fontFamily: 'Gill Sans', fontSize: '16px', fill: 'black' });
-        this.enemyHPText = this.add.text(600, 20, `Enemy HP: ${this.enemyHP}`, { fontFamily: 'Gill Sans', fontSize: '16px', fill: 'black' });
-
+        this.playerHPText = this.add.text(50, 20, `Player HP: ${this.playerHP}`, {
+            fontFamily: 'Gill Sans',
+            fontSize: '20px', // Increased font size
+            fill: '#4caf50',  // A shade of green, often associated with health
+            fontStyle: 'bold',
+            stroke: '#2e7d32', // A slightly darker green for the stroke
+            strokeThickness: 2,
+            backgroundColor: 'rgba(255, 255, 255, 0.6)', // Slightly transparent white background for better readability
+            padding: { left: 10, right: 10, top: 5, bottom: 5 } // Added some padding
+        }).setShadow(2, 2, "#000", 2, true, true); // Drop shadow for a nicer effect
+        
+        this.enemyHPText = this.add.text(600, 20, `Enemy HP: ${this.enemyHP}`, {
+            fontFamily: 'Gill Sans',
+            fontSize: '20px',
+            fill: '#f44336',  // A shade of red to distinguish between player and enemy
+            fontStyle: 'bold',
+            stroke: '#c62828', // A slightly darker red for the stroke
+            strokeThickness: 2,
+            backgroundColor: 'rgba(255, 255, 255, 0.6)',
+            padding: { left: 10, right: 10, top: 5, bottom: 5 }
+        }).setShadow(2, 2, "#000", 2, true, true);
+        
         this.turnIndicator = this.add.text(
-            400, 50, "Player's Turn", { fontFamily: 'Gill Sans', fontSize: '32px', fill: 'white' }
-            ).setOrigin(0.5);
+            400, 50, "Player's Turn", 
+            { 
+                fontFamily: 'Gill Sans', 
+                fontSize: '32px', 
+                fill: '#333', // Dark gray color
+                fontStyle: 'bold',
+                stroke: 'pink', // A slightly lighter gray for the stroke
+                strokeThickness: 3,
+            }
+        ).setOrigin(0.5);
 
         // Background Music - Load the music only once in the create method 
         //From: https://www.mfiles.co.uk/mp3-downloads/fur-elise.mp3
@@ -548,16 +575,16 @@ class GameScene extends Phaser.Scene {
             this.damagePlayerAnimation(); // Trigger player damage animation
         }
 
-        this.tweens.add({
-            targets: textObj,
-            y: originalY - 20,
-            duration: tweenDuration,
-            yoyo: true,
-            onYoyo: function() {
-                textObj.setColor('#ffffff');
-                textObj.y = originalY;
-            }
-        });
+        // this.tweens.add({
+        //     targets: textObj,
+        //     y: originalY - 20,
+        //     duration: tweenDuration,
+        //     yoyo: true,
+        //     onYoyo: function() {
+        //         textObj.setColor('#ffffff');
+        //         textObj.y = originalY;
+        //     }
+        // });
     }
 
     damageEnemyAnimation() {
