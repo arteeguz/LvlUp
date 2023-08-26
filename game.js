@@ -152,7 +152,7 @@ class GameScene extends Phaser.Scene {
     constructor() {
         super({ key: 'GameScene' });
         this.playerHP = 100;
-        this.enemyHP = 100;
+        this.enemyHP = 500;
         this.cards = ['Card1', 'Card2', 'Card3', 'Card4', 'Card5', 'Card6']; // Sample set of cards
         this.turnIndicator = null;
 
@@ -189,7 +189,7 @@ class GameScene extends Phaser.Scene {
     create(data) {
         this.playerHandGroup = this.add.group();
         this.playerHP = 100;
-        this.enemyHP = 100;
+        this.enemyHP = 500;
 
         if (data.level === 1) {
             this.add.image(400, 300, 'bg1').setOrigin(0.5).setScale(0.8);
@@ -309,6 +309,22 @@ class GameScene extends Phaser.Scene {
         this.music.play();
 
     }
+
+    resetGameState() {
+        this.playerHP = 100;
+        this.enemyHP = 500;
+        this.cards = ['Card1', 'Card2', 'Card3', 'Card4', 'Card5', 'Card6']; // Sample set of cards
+        this.turnIndicator = null;
+
+        this.music = null; //Declare music prop
+        this.playSoundBtn=null; //Declare sound butt prop
+        this.muteBtn=null; //Declare mute property
+        this.playerCards = [...this.cards]; // Initialize player cards with all available cards
+        this.maxHandSize = 6;
+        this.playerHandGroup = null;
+       // this.updatePlayerHandDisplay(); // Reset the player's hand display
+    }
+    
 
     //Gives players new cards once cards in player's hand reaches 0.
     redrawCards() {
@@ -478,14 +494,11 @@ class GameScene extends Phaser.Scene {
 
         this.playerCards.splice(this.playerCards.indexOf(cardName), 1); // Remove the used card from playerCards array
 
-        //Redundant if statement
-        /*
+        
         if (this.playerCards.length === 0) {
             this.redrawCards();
         }
-        */
 
-        this.redrawCards();
     }
     
     displayCardActionFeedback(cardName) {
@@ -575,16 +588,16 @@ class GameScene extends Phaser.Scene {
             this.damagePlayerAnimation(); // Trigger player damage animation
         }
 
-        // this.tweens.add({
-        //     targets: textObj,
-        //     y: originalY - 20,
+        this.tweens.add({
+            targets: textObj,
+            y: originalY,
         //     duration: tweenDuration,
-        //     yoyo: true,
-        //     onYoyo: function() {
-        //         textObj.setColor('#ffffff');
-        //         textObj.y = originalY;
-        //     }
-        // });
+            yoyo: true,
+                onYoyo: function() {
+                 textObj.setColor('#ffffff');
+                 textObj.y = originalY;
+             }
+         });
     }
 
     damageEnemyAnimation() {
@@ -613,6 +626,7 @@ class GameScene extends Phaser.Scene {
         if (this.playerHP <= 0) {
             this.cameras.main.fade(800, 0, 0, 0, false, function(camera, progress) {
                 if (progress === 1) {
+                    this.resetGameState();
                     this.scene.start('LoseScene');
                 }
             }, this);
@@ -622,6 +636,7 @@ class GameScene extends Phaser.Scene {
         } else if (this.enemyHP <= 0) {
             this.cameras.main.fade(800, 255, 255, 255, false, function(camera, progress) {
                 if (progress === 1) {
+                    this.resetGameState();
                     this.scene.start('WinScene');
                 }
             }, this);
