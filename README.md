@@ -46,7 +46,7 @@ Richard Palestri: theuncluded
 
 Artem Guz: arteeguz
 
-Muhammed Uddin: azurelobster
+Mohammed Uddin: azurelobster
 
 Google Slides:
 https://docs.google.com/presentation/d/1CSQyelVJowZ3LV_VAJpDpvSZIkgfmU4cxjL5CmIcLkE/edit?usp=sharing
