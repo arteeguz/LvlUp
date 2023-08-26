@@ -168,7 +168,7 @@ class GameScene extends Phaser.Scene {
         this.load.image('bg1', 'LvlUp Images/bg1.jpg');
         this.load.image('bg2', 'LvlUp Images/bg2.jpg');
         this.load.image('monster1', 'LvlUp Images/MonsterOne.png');
-        this.load.image('monster2', 'LvlUp Images/monster2.png');
+        this.load.image('monster2', 'LvlUp Images/Monster2.png');
         this.load.image('Card1', 'LvlUp Images/Card1.png');
         this.load.image('Card2', 'LvlUp Images/Card2.png');
         this.load.image('Card3', 'LvlUp Images/Card3.png');
