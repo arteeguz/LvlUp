@@ -1,0 +1,163 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1a1a1a;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #fff;
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #333;
+    padding: 20px;
+    width: 100%;
+}
+
+.group-name {
+    font-size: 28px;
+    margin: 5px 0;
+}
+
+.game-name {
+    font-size: 24px;
+    margin: 5px 0;
+}
+
+.game-border {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 620px;
+    width: 820px; 
+    background: linear-gradient(#444, #666);
+    padding: 5px;
+    margin-top: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+#game-container {
+    height: 610px; 
+    width: 810px; 
+    background-color: #222;
+    display:flex;
+}
+
+/* #card-descriptions {
+    flex: 1;
+    padding: 20px;
+} */
+
+#card-descriptions {
+    flex: 1;
+    padding: 20px;
+    background: #2a2a2a;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    display: flex;             
+    flex-wrap: wrap;          
+    justify-content: center;  
+    width: 80%;  /* Matching the width of #about-us */
+    margin-top: 40px;  /* Increased margin-top for spacing */
+}
+
+#card-descriptions h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.card-item {
+    margin: 20px;
+    width: 150px;
+    text-align: center;
+}
+
+.card-item h4 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #e6b800;
+}
+
+.card-item img {
+    width: 120px;
+    height: auto;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.card-item p {
+    margin: 0;
+}
+
+#main-menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* 100% of the viewport height */
+    width: 100vw; /* 100% of the viewport width */
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.7); /* semi-transparent black */
+    z-index: 10; /* ensure it's on top */
+}
+
+#play-button {
+    padding: 15px 30px;
+    font-size: 24px;
+    cursor: pointer;
+    border: none;
+    background-color: #333;
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+#play-button:hover {
+    background-color: #555;
+}
+
+
+#about-us {
+    background-color: #333;
+    padding: 20px;
+    margin-top: 20px;
+    width: 80%;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+h3 {
+    font-size: 24px;
+    margin-top: 0;
+}
+
+footer {
+    width: 100%;
+    background-color: #333;
+    padding: 10px 0;
+    margin-top: 30px;
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.5);
+    text-align: center;
+}
+
+footer p {
+    margin: 0;
+    font-size: 16px;
+}
+
+footer a {
+    color: #00aaff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: #0088cc;
+}
