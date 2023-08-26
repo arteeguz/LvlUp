@@ -506,22 +506,22 @@ class GameScene extends Phaser.Scene {
 
         switch (cardName) {
             case 'Card1':
-                feedbackText = "Dealt 10 damage!";
+                feedbackText = "Dealt 40 damage!";
                 break;
             case 'Card2':
                 feedbackText = "Healed 5 HP!";
                 break;
             case 'Card3':
-                feedbackText = "Healed 1 HP!";
+                feedbackText = "Healed 10 HP!";
                 break;
             case 'Card4':
-                feedbackText = "Dealt 15 damage!";
+                feedbackText = "Dealt 60 damage!";
                 break;
             case 'Card5':
                 feedbackText = "Healed 8 HP!";
                 break;
             case 'Card6':
-                feedbackText = "Healed 3 HP!";
+                feedbackText = "Dealt 40 damage!";
                 break;
         }
 
